@@ -1,0 +1,517 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 32
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	all
+	27	calc_JSD
+	28
+
+[Wed Aug  4 21:30:30 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Muscle_Skeletal.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Muscle_Skeletal_lm_results_new.tsv
+    jobid: 22
+    wildcards: tissue=Muscle_Skeletal
+
+[Wed Aug  4 21:30:30 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Nerve_Tibial.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Nerve_Tibial_lm_results_new.tsv
+    jobid: 16
+    wildcards: tissue=Nerve_Tibial
+
+[Wed Aug  4 21:30:30 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Liver.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Liver_lm_results_new.tsv
+    jobid: 24
+    wildcards: tissue=Liver
+
+
+[Wed Aug  4 21:30:30 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Prostate.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Prostate_lm_results_new.tsv
+    jobid: 9
+    wildcards: tissue=Prostate
+
+
+[Wed Aug  4 21:30:30 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Artery_Aorta.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Artery_Aorta_lm_results_new.tsv
+    jobid: 6
+    wildcards: tissue=Artery_Aorta
+
+
+[Wed Aug  4 21:30:30 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Whole_Blood.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Whole_Blood_lm_results_new.tsv
+    jobid: 1
+    wildcards: tissue=Whole_Blood
+
+
+[Wed Aug  4 21:30:30 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Colon_Sigmoid.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Colon_Sigmoid_lm_results_new.tsv
+    jobid: 3
+    wildcards: tissue=Colon_Sigmoid
+
+
+[Wed Aug  4 21:30:30 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Lung.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Lung_lm_results_new.tsv
+    jobid: 14
+    wildcards: tissue=Lung
+
+
+[Wed Aug  4 21:30:30 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Breast_Mammary_Tissue.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Breast_Mammary_Tissue_lm_results_new.tsv
+    jobid: 8
+    wildcards: tissue=Breast_Mammary_Tissue
+
+
+[Wed Aug  4 21:30:30 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Heart_Left_Ventricle.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Heart_Left_Ventricle_lm_results_new.tsv
+    jobid: 10
+    wildcards: tissue=Heart_Left_Ventricle
+
+
+[Wed Aug  4 21:30:31 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Adrenal_Gland.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Adrenal_Gland_lm_results_new.tsv
+    jobid: 26
+    wildcards: tissue=Adrenal_Gland
+
+[Wed Aug  4 21:30:31 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Skin_Sun_Exposed_Lower_leg.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Skin_Sun_Exposed_Lower_leg_lm_results_new.tsv
+    jobid: 21
+    wildcards: tissue=Skin_Sun_Exposed_Lower_leg
+
+[Wed Aug  4 21:30:31 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Cells_Cultured_fibroblasts.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Cells_Cultured_fibroblasts_lm_results_new.tsv
+    jobid: 27
+    wildcards: tissue=Cells_Cultured_fibroblasts
+
+
+[Wed Aug  4 21:30:31 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Skin_Not_Sun_Exposed_Suprapubic.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Skin_Not_Sun_Exposed_Suprapubic_lm_results_new.tsv
+    jobid: 15
+    wildcards: tissue=Skin_Not_Sun_Exposed_Suprapubic
+
+
+[Wed Aug  4 21:30:31 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Testis.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Testis_lm_results_new.tsv
+    jobid: 20
+    wildcards: tissue=Testis
+
+
+[Wed Aug  4 21:30:31 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Esophagus_Gastroesophageal_Junction.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Esophagus_Gastroesophageal_Junction_lm_results_new.tsv
+    jobid: 4
+    wildcards: tissue=Esophagus_Gastroesophageal_Junction
+
+
+[Wed Aug  4 21:30:31 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Esophagus_Muscularis.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Esophagus_Muscularis_lm_results_new.tsv
+    jobid: 11
+    wildcards: tissue=Esophagus_Muscularis
+
+
+[Wed Aug  4 21:30:31 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Esophagus_Mucosa.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Esophagus_Mucosa_lm_results_new.tsv
+    jobid: 13
+    wildcards: tissue=Esophagus_Mucosa
+
+
+[Wed Aug  4 21:30:31 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Heart_Atrial_Appendage.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Heart_Atrial_Appendage_lm_results_new.tsv
+    jobid: 7
+    wildcards: tissue=Heart_Atrial_Appendage
+
+
+[Wed Aug  4 21:30:31 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Pancreas.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Pancreas_lm_results_new.tsv
+    jobid: 23
+    wildcards: tissue=Pancreas
+
+
+[Wed Aug  4 21:30:32 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Adipose_Subcutaneous.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Adipose_Subcutaneous_lm_results_new.tsv
+    jobid: 18
+    wildcards: tissue=Adipose_Subcutaneous
+
+[Wed Aug  4 21:30:32 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Stomach.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Stomach_lm_results_new.tsv
+    jobid: 2
+    wildcards: tissue=Stomach
+
+
+[Wed Aug  4 21:30:32 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Thyroid.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Thyroid_lm_results_new.tsv
+    jobid: 17
+    wildcards: tissue=Thyroid
+
+
+[Wed Aug  4 21:30:32 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Colon_Transverse.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Colon_Transverse_lm_results_new.tsv
+    jobid: 5
+    wildcards: tissue=Colon_Transverse
+
+
+[Wed Aug  4 21:30:32 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Adipose_Visceral_Omentum.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Adipose_Visceral_Omentum_lm_results_new.tsv
+    jobid: 12
+    wildcards: tissue=Adipose_Visceral_Omentum
+
+
+[Wed Aug  4 21:30:32 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Artery_Tibial.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Artery_Tibial_lm_results_new.tsv
+    jobid: 19
+    wildcards: tissue=Artery_Tibial
+
+[Wed Aug  4 21:30:32 2021]
+rule calc_JSD:
+    input: /clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/Artery_Coronary.v8.normalized_expression.bed.gz
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Artery_Coronary_lm_results_new.tsv
+    jobid: 25
+    wildcards: tissue=Artery_Coronary
+
+Terminating processes on user request, this might take some time.
+[Wed Aug  4 21:30:53 2021]
+Error in rule calc_JSD:
+    jobid: 27
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Cells_Cultured_fibroblasts_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmpj4bggph1.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+[Wed Aug  4 21:30:53 2021]
+Error in rule calc_JSD:
+    jobid: 11
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Esophagus_Muscularis_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmplq1vo_pw.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+Removing output files of failed job calc_JSD since they might be corrupted:
+/global/scratch/ryo10244201/analysis/JSD_eQTL_new/Esophagus_Muscularis_lm_results_new.tsv
+[Wed Aug  4 21:30:53 2021]
+Error in rule calc_JSD:
+    jobid: 26
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Adrenal_Gland_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmph9bfa4u3.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+[Wed Aug  4 21:30:53 2021]
+Error in rule calc_JSD:
+Removing output files of failed job calc_JSD since they might be corrupted:
+/global/scratch/ryo10244201/analysis/JSD_eQTL_new/Adrenal_Gland_lm_results_new.tsv
+    jobid: 17
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Thyroid_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmpfgs1scz1.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+[Wed Aug  4 21:30:53 2021]
+Error in rule calc_JSD:
+    jobid: 6
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Artery_Aorta_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmpl_rk_06s.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+Removing output files of failed job calc_JSD since they might be corrupted:
+/global/scratch/ryo10244201/analysis/JSD_eQTL_new/Artery_Aorta_lm_results_new.tsv
+[Wed Aug  4 21:30:53 2021]
+Error in rule calc_JSD:
+    jobid: 4
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Esophagus_Gastroesophageal_Junction_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmp7s7ccimn.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+Removing output files of failed job calc_JSD since they might be corrupted:
+/global/scratch/ryo10244201/analysis/JSD_eQTL_new/Esophagus_Gastroesophageal_Junction_lm_results_new.tsv
+[Wed Aug  4 21:30:53 2021]
+Error in rule calc_JSD:
+    jobid: 20
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Testis_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmprrlvj28_.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+Removing output files of failed job calc_JSD since they might be corrupted:
+/global/scratch/ryo10244201/analysis/JSD_eQTL_new/Testis_lm_results_new.tsv
+[Wed Aug  4 21:30:53 2021]
+Error in rule calc_JSD:
+    jobid: 19
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Artery_Tibial_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmp227mllii.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+Removing output files of failed job calc_JSD since they might be corrupted:
+/global/scratch/ryo10244201/analysis/JSD_eQTL_new/Artery_Tibial_lm_results_new.tsv
+[Wed Aug  4 21:30:53 2021]
+Error in rule calc_JSD:
+    jobid: 3
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Colon_Sigmoid_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmpk2qiqi1m.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+Removing output files of failed job calc_JSD since they might be corrupted:
+/global/scratch/ryo10244201/analysis/JSD_eQTL_new/Colon_Sigmoid_lm_results_new.tsv
+[Wed Aug  4 21:30:53 2021]
+Error in rule calc_JSD:
+    jobid: 25
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Artery_Coronary_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmpuvdqjp7v.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+Removing output files of failed job calc_JSD since they might be corrupted:
+/global/scratch/ryo10244201/analysis/JSD_eQTL_new/Artery_Coronary_lm_results_new.tsv
+[Wed Aug  4 21:30:53 2021]
+Error in rule calc_JSD:
+    jobid: 10
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Heart_Left_Ventricle_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmpbqu739n0.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+Removing output files of failed job calc_JSD since they might be corrupted:
+/global/scratch/ryo10244201/analysis/JSD_eQTL_new/Heart_Left_Ventricle_lm_results_new.tsv
+[Wed Aug  4 21:30:53 2021]
+Error in rule calc_JSD:
+    jobid: 24
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Liver_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmpviet4nak.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+Removing output files of failed job calc_JSD since they might be corrupted:
+/global/scratch/ryo10244201/analysis/JSD_eQTL_new/Liver_lm_results_new.tsv
+[Wed Aug  4 21:30:53 2021]
+Error in rule calc_JSD:
+    jobid: 21
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Skin_Sun_Exposed_Lower_leg_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmp08fgt99h.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+Removing output files of failed job calc_JSD since they might be corrupted:
+/global/scratch/ryo10244201/analysis/JSD_eQTL_new/Skin_Sun_Exposed_Lower_leg_lm_results_new.tsv
+[Wed Aug  4 21:30:53 2021]
+Error in rule calc_JSD:
+    jobid: 14
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Lung_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmpqo2pl41r.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+Removing output files of failed job calc_JSD since they might be corrupted:
+/global/scratch/ryo10244201/analysis/JSD_eQTL_new/Lung_lm_results_new.tsv
+[Wed Aug  4 21:30:53 2021]
+Error in rule calc_JSD:
+    jobid: 5
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Colon_Transverse_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmp4xdv0q3e.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+Removing output files of failed job calc_JSD since they might be corrupted:
+/global/scratch/ryo10244201/analysis/JSD_eQTL_new/Colon_Transverse_lm_results_new.tsv
+[Wed Aug  4 21:30:53 2021]
+Error in rule calc_JSD:
+    jobid: 12
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Adipose_Visceral_Omentum_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmpal6pbtsw.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+Removing output files of failed job calc_JSD since they might be corrupted:
+/global/scratch/ryo10244201/analysis/JSD_eQTL_new/Adipose_Visceral_Omentum_lm_results_new.tsv
+[Wed Aug  4 21:30:53 2021]
+Error in rule calc_JSD:
+    jobid: 22
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Muscle_Skeletal_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmpg7mhj3s0.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+Removing output files of failed job calc_JSD since they might be corrupted:
+/global/scratch/ryo10244201/analysis/JSD_eQTL_new/Muscle_Skeletal_lm_results_new.tsv
+[Wed Aug  4 21:30:53 2021]
+Error in rule calc_JSD:
+    jobid: 9
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Prostate_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmp2pd3utg_.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+Removing output files of failed job calc_JSD since they might be corrupted:
+/global/scratch/ryo10244201/analysis/JSD_eQTL_new/Prostate_lm_results_new.tsv
+[Wed Aug  4 21:30:53 2021]
+Error in rule calc_JSD:
+    jobid: 2
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Stomach_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmpdbie8b_0.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+Removing output files of failed job calc_JSD since they might be corrupted:
+/global/scratch/ryo10244201/analysis/JSD_eQTL_new/Stomach_lm_results_new.tsv
+[Wed Aug  4 21:30:53 2021]
+Error in rule calc_JSD:
+    jobid: 15
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Skin_Not_Sun_Exposed_Suprapubic_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmppa8ij894.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+Removing output files of failed job calc_JSD since they might be corrupted:
+/global/scratch/ryo10244201/analysis/JSD_eQTL_new/Skin_Not_Sun_Exposed_Suprapubic_lm_results_new.tsv
+[Wed Aug  4 21:30:53 2021]
+Error in rule calc_JSD:
+    jobid: 23
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Pancreas_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmplbjzpza2.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+Removing output files of failed job calc_JSD since they might be corrupted:
+/global/scratch/ryo10244201/analysis/JSD_eQTL_new/Pancreas_lm_results_new.tsv
+[Wed Aug  4 21:30:54 2021]
+Error in rule calc_JSD:
+    jobid: 16
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Nerve_Tibial_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmprkmg0zbc.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+Removing output files of failed job calc_JSD since they might be corrupted:
+/global/scratch/ryo10244201/analysis/JSD_eQTL_new/Nerve_Tibial_lm_results_new.tsv
+[Wed Aug  4 21:30:54 2021]
+Error in rule calc_JSD:
+    jobid: 13
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Esophagus_Mucosa_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmpwc0fpqv6.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+Removing output files of failed job calc_JSD since they might be corrupted:
+/global/scratch/ryo10244201/analysis/JSD_eQTL_new/Esophagus_Mucosa_lm_results_new.tsv
+[Wed Aug  4 21:30:54 2021]
+Error in rule calc_JSD:
+    jobid: 7
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Heart_Atrial_Appendage_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmpg_5rtvuc.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+Removing output files of failed job calc_JSD since they might be corrupted:
+/global/scratch/ryo10244201/analysis/JSD_eQTL_new/Heart_Atrial_Appendage_lm_results_new.tsv
+[Wed Aug  4 21:30:54 2021]
+Error in rule calc_JSD:
+    jobid: 18
+    output: /global/scratch/ryo10244201/analysis/JSD_eQTL_new/Adipose_Subcutaneous_lm_results_new.tsv
+
+RuleException:
+CalledProcessError in line 16 of /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile:
+Command 'set -euo pipefail;  /global/home/users/ryo10244201/miniconda3/bin/python3.6 /global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/script/JSD/.snakemake/scripts/tmpwtoozvkr.JSD_eQTL.py' returned non-zero exit status 1.
+  File "/global/home/users/ryo10244201/sudmant_lab/gene_expression_variance/snakemake/JSD_eQTL.snakefile", line 16, in __rule_calc_JSD
+  File "/global/home/users/ryo10244201/miniconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+Removing output files of failed job calc_JSD since they might be corrupted:
+/global/scratch/ryo10244201/analysis/JSD_eQTL_new/Adipose_Subcutaneous_lm_results_new.tsv
+Cancelling snakemake on user request.
