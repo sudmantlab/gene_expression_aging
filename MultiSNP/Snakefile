@@ -1,0 +1,15 @@
+TISS, = glob_wildcards("/global/scratch-old/ryo10244201/analysis/Predixcan_cov/{tiss}_adjust_exp.csv")
+
+rule all:
+    input: 
+        expand("/clusterfs/nilah/rkchung/data/expred/output/res_{tiss}_agereg_proc0.npy", tiss=TISS)
+
+rule traingtex:
+    input: "/clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/{tiss}.v8.normalized_expression.bed.gz"
+    output: 
+        "/clusterfs/nilah/rkchung/data/expred/output/res_{tiss}_agereg_proc0.npy"
+    resources: cpus=24
+    threads: 24
+    shell:
+        "python agemodel.py --processed --expr {input} --run 0" # add --cohorts to run cohort model
+        #"python train_gtex.py {input} {wildcards.run}"
