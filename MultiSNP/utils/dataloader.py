@@ -4,6 +4,8 @@ import pandas as pd
 import allel
 from sklearn.decomposition import PCA
 
+import os
+
 def load_expr_covar(pivus, processed, short, gtex_dir):
     expr = pd.read_csv(short, sep="\t")
     expr["#chr"] = expr["#chr"].str.split("chr").str[1]
@@ -12,7 +14,8 @@ def load_expr_covar(pivus, processed, short, gtex_dir):
             ".v8.normalized_expression")[0]
     # combine PEER factors, PCA, sex into covar df
     if processed:
-        adj_dir = "/global/scratch/users/ryo10244201/analysis/Predixcan_cov/"
+        adj_dir = os.getcwd()+"/../PEER/"
+        #adj_dir = "/global/scratch/users/ryo10244201/analysis/Predixcan_cov/"
         covar = pd.read_csv(adj_dir + short + "_covariates.csv", index_col=0)
 
         # remove age and transpose expr and covariate dataframes
@@ -54,7 +57,6 @@ def load_data(data_dir, gtex_dir, age_reg_out=False):
     age_df["age_cohort"] = "young"
     age_df.loc[age_df["age"]>55, "age_cohort"] = "old"
     age_df["norm_age"] = (age_df["age"]-age_df["age"].mean())/age_df["age"].std()
-    age_df.to_csv("ages.tmp")
     indiv_age_map = dict(zip(age_df.SUBJID, age_df.norm_age))
 
     # Individuals in each age cohort

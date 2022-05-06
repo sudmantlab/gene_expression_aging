@@ -2,8 +2,10 @@ import numpy as np
 from glmnet import ElasticNet
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
+from utils.helpers import Seed
 
-def fit_clf(gene_gt, expr, clf, tr_indiv=None, indiv_age_map=None, 
+# Fit gene expression model for one gene and given individuals
+def fit_clf(gene_gt, expr, clf, covar, tr_indiv=None, indiv_age_map=None, 
             sep=False, sex=None):
     output = {}
     X = np.transpose(gene_gt[tr_indiv].to_numpy())
@@ -28,7 +30,7 @@ def fit_clf(gene_gt, expr, clf, tr_indiv=None, indiv_age_map=None,
     return clf.cv_mean_score_[clf.lambda_max_inx_], coef
 
 # Given trained model weights, evaluates R^2 age and genetics
-def eval_modelperf(gene_gt, coefs, expr_row, t_indiv, indiv_age_map, sex):
+def eval_modelperf(gene_gt, coefs, expr_row, covar, t_indiv, indiv_age_map, sex):
     centered_expr = expr_row[t_indiv]-np.mean(expr_row[t_indiv])
     last_index = len(coefs) if indiv_age_map==None else (-1 if not sex else -2)
     pred = np.matmul(coefs[:last_index], gene_gt[t_indiv].to_numpy())
@@ -55,8 +57,8 @@ def eval_modelperf(gene_gt, coefs, expr_row, t_indiv, indiv_age_map, sex):
     return gene_r2, age_r2, sex_r2
 
 
-# Run train age/genetic model using bootstrap samples of individuals
-def bootstrap_train(gene_gt, row, indiv, tr_indiv, t_indiv=None, 
+# Train age/genetic model using bootstrap samples of individuals
+def bootstrap_train(gene_gt, row, covar, indiv, tr_indiv, t_indiv=None, 
                     indiv_age_map=None, sep=False, bootstrap=None,
                     sex=False, seed=Seed(0,0), old=True):
     bootres = {}
@@ -77,11 +79,11 @@ def bootstrap_train(gene_gt, row, indiv, tr_indiv, t_indiv=None,
             t_indivboot = t_indiv
 
         t_r2, coef = \
-            fit_clf(gene_gt, row, clf, tr_indivboot, 
+            fit_clf(gene_gt, row, clf, covar, tr_indivboot,  
                     indiv_age_map=indiv_age_map, sep=sep, sex=sex)
 
         # evaluate r2 of gt and age
-        gene_r2, age_r2, sex_r2 = eval_modelperf(gene_gt, coef, row, 
+        gene_r2, age_r2, sex_r2 = eval_modelperf(gene_gt, coef, row, covar,
                                          t_indivboot, indiv_age_map, sex=sex)
 
     bootres.setdefault(prefix+"t_r2",[]).append(t_r2)
@@ -91,13 +93,16 @@ def bootstrap_train(gene_gt, row, indiv, tr_indiv, t_indiv=None,
         bootres.setdefault(prefix+"age_coef",[]).append(coef[-1])
         if sex:
             bootres.setdefault(prefix+"sex_coef",[]).append(coef[-2])
+    print(bootres)
     return bootres
 
+# Full training sequence for given gene expression
 def train_model(gt, row, covar, indiv, tr_old_indiv, tr_young_indiv=None, 
                 t_old_indiv=None, t_young_indiv=None, eval_other=False, 
                 indiv_age_map=None, reg_out=True, sep=False, bootstrap=None,
                 intermresdir=None, sex=False, seed=Seed(0,0)):
     output = {}
+    # Pulls genotypes of individuals for given gene region
     gene_gt = gt.loc[(gt["Chrom"]==row["#chr"]) & 
                      (gt["Pos"]>=(row["start"]-5e5)) & 
                      (gt["Pos"]<=(row["start"]+5e5)), 
@@ -120,12 +125,12 @@ def train_model(gt, row, covar, indiv, tr_old_indiv, tr_young_indiv=None,
         row[indiv] = row[indiv] - skclf.predict(covar_T)
         output["covar_r2"] = [covar_r2]
 
-    bootres = bootstrap_train(gene_gt, row, indiv, tr_old_indiv, 
+    # Training loop for number of bootstrap samples
+    bootres = bootstrap_train(gene_gt, row, covar, indiv, tr_old_indiv, 
                               t_indiv=t_old_indiv, 
                               indiv_age_map=indiv_age_map, sep=sep,
                               bootstrap=bootstrap, sex=sex, seed=seed, 
                               old=True)
-    #output["coef"] = [old_coef]
     for k, v in bootres.items():
         output[k] = [np.mean(bootres[k])]
         output["sd_"+k] = [np.std(bootres[k])]
@@ -133,13 +138,12 @@ def train_model(gt, row, covar, indiv, tr_old_indiv, tr_young_indiv=None,
         output["nonz_agecoef"] = [np.mean(bootres["age_coef"]==0)]
 
     # Build model and evaluate on young cohort if exists
-    if tr_young_indiv!=None: # Evaluates r2 on other cohort
-        bootres = bootstrap_train(gene_gt, row, indiv, tr_young_indiv, 
+    if tr_young_indiv is not None: # Evaluates r2 on other cohort
+        bootres = bootstrap_train(gene_gt, row, covar, indiv, tr_young_indiv, 
                                   t_indiv=t_young_indiv, 
                                   indiv_age_map=indiv_age_map, sep=sep,
                                   bootstrap=bootstrap, sex=sex, seed=seed, 
                                   old=False)
-        #output["coef"] = [old_coef]
         for k, v in bootres.items():
             output[k] = [np.mean(bootres[k])]
             output["sd_"+k] = [np.std(bootres[k])]
@@ -147,5 +151,5 @@ def train_model(gt, row, covar, indiv, tr_old_indiv, tr_young_indiv=None,
             output["nonz_young_agecoef"] = [np.mean(bootres["young_age_coef"]==0)]
 
     if intermresdir != None:
-        np.save(output, intermresdir+"/"+gt["gene"])
+        np.save(intermresdir+"/"+row["gene_id"], output)
     return output

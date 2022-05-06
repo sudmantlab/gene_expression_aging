@@ -1,15 +1,15 @@
-TISS, = glob_wildcards("/global/scratch-old/ryo10244201/analysis/Predixcan_cov/{tiss}_adjust_exp.csv")
+TISS, = glob_wildcards("/global/scratch/users/ryo10244201/analysis/Predixcan_cov/{tiss}_adjust_exp.csv")
 
 rule all:
     input: 
-        expand("/clusterfs/nilah/rkchung/data/expred/output/res_{tiss}_agereg_proc0.npy", tiss=TISS)
+        expand("/clusterfs/nilah/rkchung/data/expred/output/res_{tiss}_cohort2.npy", tiss=TISS)
 
 rule traingtex:
     input: "/clusterfs/genomicdata/GTEx/eQTL_files/GTEx_Analysis_v8_eQTL_expression_matrices/{tiss}.v8.normalized_expression.bed.gz"
     output: 
-        "/clusterfs/nilah/rkchung/data/expred/output/res_{tiss}_agereg_proc0.npy"
+        "/clusterfs/nilah/rkchung/data/expred/output/res_{tiss}_cohort2.npy"
     resources: cpus=24
     threads: 24
     shell:
-        "python agemodel.py --processed --expr {input} --run 0" # add --cohorts to run cohort model
-        #"python train_gtex.py {input} {wildcards.run}"
+        "python agemodel.py --expr {input} --run 1 --saveinterm --bootstrap 1 --processed --cohort --data_dir /clusterfs/nilah/rkchung/data/expred/ --gtex_dir /clusterfs/genomicdata/GTEx/eQTL_files/"
+        #"python train_gtex.py --expr {input} --run boot --saveinterm --sex --bootstrap 1 --processed --data_dir /clusterfs/nilah/rkchung/data/expred/ --gtex_dir /clusterfs/genomicdata/GTEx/eQTL_files/"
