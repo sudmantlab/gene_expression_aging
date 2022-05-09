@@ -37,145 +37,206 @@ data_path <- "Y:/analysis/JSD_eQTL/Whole_Blood_lm_dist_4.tsv"
 
 frame <- vroom(data_path)
 
+frame_HAA <- vroom("Y:/analysis/JSD_eQTL/Heart_Atrial_Appendage_lm_dist_4.tsv")
+
 genes = c("ENSG00000137106.17", "ENSG00000258289.8",
           "ENSG00000273295.1",  "ENSG00000214425.7", 
           "ENSG00000178952.10", "ENSG00000074803.17",
           "ENSG00000108342.12")
 
-frame %>% dplyr::select(starts_with('ENSG00000108342'))
 
-panel = function(gene) {
-  frame_gene = frame %>%
-    dplyr::select("...1", starts_with(gene)) %>%
-    dplyr::mutate(SUBJID = ...1, exp = !!as.name(paste0(gene, '_exp')), genotype = !!as.name(paste0(gene, '_geno')))  %>%
-    filter(!is.na(exp)) %>%
-    mutate(genotype = str_replace(genotype, '_', '/'))
+
+panel = function(gene, WB) {
+  if (WB == TRUE) {
+    frame_gene = frame %>%
+      dplyr::select("...1", starts_with(gene)) %>%
+      dplyr::mutate(SUBJID = ...1, exp = !!as.name(paste0(gene, '_exp')), genotype = !!as.name(paste0(gene, '_geno')))  %>%
+      filter(!is.na(exp)) %>%
+      mutate(genotype = str_replace(genotype, '_', '/'))
     group_by(genotype)
+  }
+  else {
+    frame_gene = frame_HAA %>%
+      dplyr::select("...1", starts_with(gene)) %>%
+      dplyr::mutate(SUBJID = ...1, exp = !!as.name(paste0(gene, '_exp')), genotype = !!as.name(paste0(gene, '_geno')))  %>%
+      filter(!is.na(exp)) %>%
+      mutate(genotype = str_replace(genotype, '_', '/'))
+    group_by(genotype)
+  }
+  
   
   test_t = inner_join(frame_gene, samp_table, by='SUBJID')
-  
+  size = 40
   g1 = ggplot(test_t %>%
                 filter(!is.na(exp)) %>%
                 mutate(age = ifelse(AGE > 55, 'old', 'young'))
   ) +
-    stat_summary(aes(y = exp, x = fct_rev(age), col= age), size = 1, alpha = 0.8) +
-    geom_jitter(aes(y = exp, x = fct_rev(age), col= age) , alpha = 0.3) +
-    facet_wrap(~genotype, nrow = 1) + 
+    #stat_summary(aes(y = exp, x = genotype, col= age), size = 1, alpha = 0.8) +
+    geom_boxplot(aes(y = exp, x = genotype, fill= age) , alpha = 0.5) +
+    geom_smooth(aes(y = exp, x = genotype, col= age, group=age), method='lm', se=F, alpha=0.5) +
+    #facet_wrap(~age, nrow = 1) + 
     labs(
       x=TeX('genotype'),
       y=TeX('expression')
     )+
-    theme_bw(base_size=12)+
+    theme_classic(base_size=20)+
     theme(
-      legend.position = "None",
+      #legend.position = "None",
       legend.box = "vertical",
-      text = element_text(size=10),
-      axis.title = element_text(size=12),
-      axis.text = element_text(size=12),
+      #legend.key
+      legend.margin=margin(t=0, r=0, b=-0.5, l=0, unit="cm"),
+      text = element_text(size=size),
+      axis.title = element_text(size=size),
+      axis.text = element_text(size=size),
       strip.background = element_blank(),
-      strip.text = element_text(size=12)
+      strip.text = element_text(size=size)
     ) + 
     scale_color_brewer(
+      palette = 'Set1'
+    ) + 
+    scale_fill_brewer(
       palette = 'Set1'
     )
   return(g1)
 }
+# frame %>% dplyr::select(starts_with("ENSG00000064886"))
+# 
+# panel("ENSG00000133937.4") + ggtitle("GSC")
+# 
+# panel("ENSG00000104177.17") + ggtitle("MYEF2")
+# 
+# panel("ENSG00000064886.13") + ggtitle("CHI3L2")
 
-genes_plot = c("ENSG00000108342.12", "ENSG00000178952.10", "ENSG00000258289.8", "ENSG00000214425.7")
+#genes_plot = c("ENSG00000137106.17", "ENSG00000273295.1", "ENSG00000092758.15", "ENSG00000164597.13")
 
-g1.1 = panel("ENSG00000108342.12")
+g1.1 = panel("ENSG00000137106.17", TRUE)
 
 g1.1
 
-g1.2 = panel("ENSG00000178952.10")
+g1.2 = panel("ENSG00000273295.1", TRUE)
 
-g1.3 = panel("ENSG00000258289.8")
+g1.2
 
-g1.4 = panel("ENSG00000214425.7")
+g1.3 = panel("ENSG00000263335.1", FALSE)
 
-gene_ids = c("CSF3", "TUFM", "CHURC1", "LRRC37A4P")
+g1.3
+
+g1.4 = panel("ENSG00000013573.16", FALSE)
+
+g1.4
+
+panel("ENSG00000013573.16", FALSE)
+
+
+
+
+gene_ids = c("GRHPR (Blood)", "MIF-AS1 (Blood)", "AF001548.5 (HeartAA)", "DDX11 (HeartAA)")
 
 g1 = ggarrange(g1.1, g1.2, g1.3, g1.4, ncol = 2, nrow=2,
-               label.y = 1.02,
-               font.label = list(size = 12, color = "black",face="bold.italic", family = NULL), 
-               labels = gene_ids)
+               label.y = 1.015,
+               font.label = list(size = 40, color = "black",face="bold.italic", family = NULL), 
+               labels = gene_ids
+               ,common.legend=TRUE
+               , legend="right"
+               )
 
 g1
 
-ggsave(paste0(path_temp,'gene_examples.png'), plot = g1, width = 14, height = 12, scale=0.5, dpi=600)
+ggsave(paste0(path_temp,'gene_examples.png'), plot = g1, width = 9, height = 7, units='in', dpi=300)
 
-str_split(names(frame), '_', 1)
-
-gene_all = str_extract(names(frame), "(.*)(?=_)") %>% 
-  unique()
-
-gene_all = na.omit(gene_all)
-
-full_frame = data.frame(genotype=character(0),
-                        age=character(0),
-                        mu_g=numeric(0),
-                        gene=character(0)
-)
-
-for (gene in gene_all) {
-  frame_gene = frame %>%
-    dplyr::select("...1", starts_with(gene)) %>%
-    dplyr::mutate(SUBJID = ...1, exp = !!as.name(paste0(gene, '_exp')), genotype = !!as.name(paste0(gene, '_geno')))  %>%
-    filter(!is.na(exp)) %>%
-    group_by(genotype)
-  
-  test_t = inner_join(frame_gene, samp_table, by='SUBJID')
-  
-  s = test_t %>%
-    mutate(age = ifelse(AGE > 55, 'old', 'young')) %>%
-    group_by(genotype, age) %>%
-    dplyr::summarise(mu_g = mean(exp))
-  s$gene = gene
-  
-  full_frame = rbind(full_frame, s)
-}
-
-write.csv2(full_frame, "../analysis/meam_genotype_blood.csv")
-
-full_frame_new = full_frame %>%
-  pivot_wider(names_from = age, values_from=mu_g) %>%
-  mutate(delta = young - old) %>%
-  mutate('trend' = ifelse(delta > 0, 'young_up', 'old_up')) %>%
-  filter(!genotype %in% c('A_A', 'G_G', 'C_C', 'T_T'))
-
-full_frame_new %>%
-  group_by(trend) %>%
-  dplyr::summarise(n=n())
-
-ggplot(full_frame %>% filter(!genotype %in% c('A_A', 'G_G', 'C_C', 'T_T'))) + geom_boxplot(aes(x = age, y=mu_g))
-
-mean(na.omit(full_frame_new$delta))
-
-t.test(full_frame_new$old, full_frame_new$young, paired = TRUE, alternative = "two.sided")
-
-t.test(na.omit(full_frame_new$delta))
-
-frame_gene = frame %>%
-  dplyr::select("...1", starts_with(gene)) %>%
-  dplyr::mutate(SUBJID = ...1, exp = !!as.name(paste0(gene, '_exp')), genotype = !!as.name(paste0(gene, '_geno')))  %>%
-  filter(!is.na(exp)) %>%
-  group_by(genotype)
-
-
-
-test_t = inner_join(frame_gene, samp_table, by='SUBJID')
-
-s = test_t %>%
-  mutate(age = ifelse(AGE > 55, 'old', 'young')) %>%
-  group_by(genotype, age) %>%
-  dplyr::summarise(mu_g = mean(exp))
-s$gene = gene
-
-s
+# str_split(names(frame), '_', 1)
+# 
+# gene_all = str_extract(names(frame), "(.*)(?=_)") %>% 
+#   unique()
+# 
+# gene_all = na.omit(gene_all)
+# 
+# full_frame = data.frame(genotype=character(0),
+#                         age=character(0),
+#                         mu_g=numeric(0),
+#                         gene=character(0)
+# )
+# 
+# for (gene in gene_all) {
+#   frame_gene = frame %>%
+#     dplyr::select("...1", starts_with(gene)) %>%
+#     dplyr::mutate(SUBJID = ...1, exp = !!as.name(paste0(gene, '_exp')), genotype = !!as.name(paste0(gene, '_geno')))  %>%
+#     filter(!is.na(exp)) %>%
+#     group_by(genotype)
+#   
+#   test_t = inner_join(frame_gene, samp_table, by='SUBJID')
+#   
+#   s = test_t %>%
+#     mutate(age = ifelse(AGE > 55, 'old', 'young')) %>%
+#     group_by(genotype, age) %>%
+#     dplyr::summarise(mu_g = mean(exp))
+#   s$gene = gene
+#   
+#   full_frame = rbind(full_frame, s)
+# }
+# 
+# write.csv2(full_frame, "../analysis/meam_genotype_blood.csv")
+# 
+# full_frame_new = full_frame %>%
+#   pivot_wider(names_from = age, values_from=mu_g) %>%
+#   mutate(delta = young - old) %>%
+#   mutate('trend' = ifelse(delta > 0, 'young_up', 'old_up')) %>%
+#   filter(!genotype %in% c('A_A', 'G_G', 'C_C', 'T_T'))
+# 
+# full_frame_new %>%
+#   group_by(trend) %>%
+#   dplyr::summarise(n=n())
+# 
+# ggplot(full_frame %>% filter(!genotype %in% c('A_A', 'G_G', 'C_C', 'T_T'))) + geom_boxplot(aes(x = age, y=mu_g))
+# 
+# mean(na.omit(full_frame_new$delta))
+# 
+# t.test(full_frame_new$old, full_frame_new$young, paired = TRUE, alternative = "two.sided")
+# 
+# t.test(na.omit(full_frame_new$delta))
+# 
+# frame_gene = frame %>%
+#   dplyr::select("...1", starts_with(gene)) %>%
+#   dplyr::mutate(SUBJID = ...1, exp = !!as.name(paste0(gene, '_exp')), genotype = !!as.name(paste0(gene, '_geno')))  %>%
+#   filter(!is.na(exp)) %>%
+#   group_by(genotype)
+# 
+# 
+# 
+# test_t = inner_join(frame_gene, samp_table, by='SUBJID')
+# 
+# s = test_t %>%
+#   mutate(age = ifelse(AGE > 55, 'old', 'young')) %>%
+#   group_by(genotype, age) %>%
+#   dplyr::summarise(mu_g = mean(exp))
+# s$gene = gene
+# 
+# s
 
 data_all <- "Y:/analysis/JSD_eQTL_new/All_Tissue_lm_results_new.tsv"
 
 frame2 <- vroom(data_all)
+
+frame2_HAA = frame2 %>% filter(Tissue == 'Heart_Atrial_Appendage') %>%
+  mutate(pval = pval_combined) %>%
+    mutate(logP = -log10(pval)) %>%
+    filter(age %in% c('old', 'young')) %>%
+    dplyr::select(gene, age, logP) %>%
+    pivot_wider(names_from = 'age', values_from = 'logP') %>%
+    mutate(delta = old - young)
+
+# frame_processed = frame2 %>% mutate(pval = pval_combined) %>%
+#   dplyr::select(R2, Tissue, gene, age, pval)
+# 
+# frame_blood = frame_processed %>%
+#   filter(Tissue == "Whole_Blood") %>%
+#   mutate(logP = -log10(pval)) %>%
+#   filter(age %in% c('old', 'young')) %>%
+#   dplyr::select(gene, age, logP) %>%
+#   pivot_wider(names_from = 'age', values_from = 'logP') %>%
+#   mutate(delta = old - young)
+# 
+# write.table(frame_processed, "Y:/analysis/eQTL/All_lm_results.tsv", sep='\t')
 
 gt50 = c('Whole_Blood','Stomach',
          'Colon_Sigmoid',
@@ -211,19 +272,27 @@ gt50 = c('Whole_Blood','Stomach',
 
 frame2$Tissue %>% unique()
 
-tissue_names <-  vroom('../analysis/misc/selected_tissue_abbreviations_etl.tsv')
+tissue_names <-  vroom('../analysis/misc/selected_tissue_abbreviations_etl2.tsv')
+
+tissue_names_short <- vroom('../analysis/misc/selected_tissue_abbreviations_gtex.tsv')
 
 frame2$Tissue_ab <- mapvalues(frame2$Tissue, tissue_names$SMTSD, tissue_names$tissue)
 
-g = ggplot(frame2 %>% 
-             filter(age == 'neut') %>%
-             group_by(Tissue_ab) %>%
-             mutate(mu = mean(slope_AGE))
-             , aes(x = reorder(Tissue_ab, mu), y = slope_AGE))
+frame2$Tissue_sh <- mapvalues(frame2$Tissue, tissue_names_short$Tissue, tissue_names_short$short)
 
-g0 = g + stat_summary()
+# g = ggplot(frame2 %>% 
+#              filter(age == 'neut') %>%
+#              group_by(Tissue_ab) %>%
+#              mutate(mu = mean(slope_AGE))
+#              , aes(x = reorder(Tissue_ab, mu), y = slope_AGE))
+# 
+# g0 = g + stat_summary()
+# 
+# g0
+# 
+# ggsave(paste0(path_temp, "slope_age.png"),  plot=g0, width = 20, height = 12, scale=1, dpi=600)
 
-ggsave(paste0(path_temp, "slope_age.png"),  plot=g0, width = 20, height = 12, scale=1, dpi=600)
+frame_blood = frame2 %>% filter(Tissue == "Whole_Blood")
 
 t_sum = frame2 %>% 
   mutate(P=pval_combined) %>%
@@ -244,10 +313,15 @@ t_sum_gene = t_sum %>%
   mutate(delta = old - young) %>%
   arrange(delta)
 
-t_sum_gene %>%
-  mutate(up = ifelse(delta < 0, 'up', 'down')) %>%
-  group_by(up) %>%
-  dplyr::summarise(n = n())
+t_sum_count = t_sum_gene %>%
+  mutate(up_down = ifelse(delta < 0, 'up_with_age', 'down_with_age')) %>%
+  group_by(Tissue, up_down) %>%
+  dplyr::summarise(n = n()) %>%
+  filter(!is.na(up_down))
+
+write.csv2(t_sum_count, paste0(path_temp, "gene_updown_counts.csv"))
+
+path_temp
 
 t_sum_blood = t_sum_gene %>% filter(Tissue == "Whole_Blood")
 
@@ -266,71 +340,75 @@ t_summary_stats = frame2 %>%
   filter(Tissue %in% gt50) %>%
   arrange(-delta)
   
-t_summary_stats_slope = frame2 %>% 
-    dplyr::mutate(slope = `slope_genotype[T.0|1]`) %>%
-    dplyr::group_by(Tissue,age) %>%
-    dplyr::summarize(mu_slope = mean(slope, na.rm = TRUE)) %>%
-    ungroup() %>%
-    dplyr::select(Tissue,age, mu_slope) %>%
-    filter(!is.nan(mu_slope)) %>%
-    pivot_wider(names_from="age",values_from="mu_slope") %>%
-    mutate(delta=young-old) %>%
-    filter(Tissue %in% gt50) %>%
-    arrange(-delta)
+# t_summary_stats_slope = frame2 %>% 
+#     dplyr::mutate(slope = `slope_genotype[T.0|1]`) %>%
+#     dplyr::group_by(Tissue,age) %>%
+#     dplyr::summarize(mu_slope = mean(slope, na.rm = TRUE)) %>%
+#     ungroup() %>%
+#     dplyr::select(Tissue,age, mu_slope) %>%
+#     filter(!is.nan(mu_slope)) %>%
+#     pivot_wider(names_from="age",values_from="mu_slope") %>%
+#     mutate(delta=young-old) %>%
+#     filter(Tissue %in% gt50) %>%
+#     arrange(-delta)
+# 
+# t_summary_new = inner_join(t_summary_stats, t_summary_stats_slope, by='Tissue')
 
-t_summary_new = inner_join(t_summary_stats, t_summary_stats_slope, by='Tissue')
+# t_dist = frame2 %>% 
+#   filter(Tissue %in% gt50) %>%
+#   dplyr::mutate(slope = `slope_genotype[T.0|1]`) %>%
+#   dplyr::mutate(logP = -log(pval_combined, 10)) %>%
+#   dplyr::select(Tissue, age, slope, gene, logP) %>%
+#   filter(!is.nan(slope)) %>%
+#   pivot_wider(names_from = "age", values_from = c("slope", "logP"), values_fn = mean ) %>%
+#   mutate(delta_slope = slope_young - slope_old) %>%
+#   mutate(delta_P = logP_young - logP_old) 
 
-t_dist = frame2 %>% 
-  filter(Tissue %in% gt50) %>%
-  dplyr::mutate(slope = `slope_genotype[T.0|1]`) %>%
-  dplyr::mutate(logP = -log(pval_combined, 10)) %>%
-  dplyr::select(Tissue, age, slope, gene, logP) %>%
-  filter(!is.nan(slope)) %>%
-  pivot_wider(names_from = "age", values_from = c("slope", "logP"), values_fn = mean ) %>%
-  mutate(delta_slope = slope_young - slope_old) %>%
-  mutate(delta_P = logP_young - logP_old) 
+# g = ggplot(t_dist, aes(x = delta_P, y = delta_slope, col = Tissue))
+# g + stat_summary_bin() + geom_smooth(method = 'lm', se=FALSE) + ylim(c(-0.5, 0.5))
+# 
+# m0 = t_dist %>% group_by(Tissue) %>%
+#   do(tidy(lm(delta_slope~delta_P, data=.)))
+# 
+# m0 %>% filter(estimate < 0)
+# 
+# a = m0 %>% filter(p.value < 0.05 / 27) 
+# 
+# a$Tissue
 
-g = ggplot(t_dist, aes(x = delta_P, y = delta_slope, col = Tissue))
-g + stat_summary_bin() + geom_smooth(method = 'lm', se=FALSE) + ylim(c(-0.5, 0.5))
-
-m0 = t_dist %>% group_by(Tissue) %>%
-  do(tidy(lm(delta_slope~delta_P, data=.)))
-
-m0 %>% filter(estimate < 0)
-
-a = m0 %>% filter(p.value < 0.05 / 27) 
-
-a$Tissue
-
-g = ggplot(t_summary_new)
-
-R = cor.test(t_summary_new$delta.x, t_summary_new$delta.y)
-
-R
-
-g0 = g + geom_point(aes(x = delta.x, y = delta.y, fill = Tissue), size=5, pch=21, colour='black') +
-  geom_text_repel(aes(x = delta.x, y = delta.y, label = Tissue), force = 1, nudge_y = 0.001, size=5) + 
-  labs(
-    x=TeX('$\\Delta{log P value}'),
-    y=TeX('$\\Delta{slope}$')
-  )+
-  theme_bw(base_size=16)+
-  theme(
-    legend.position = "None",
-    legend.box = "vertical",
-    text = element_text(size=14),
-    axis.title = element_text(size=16),
-    axis.text = element_text(size=16)
-  ) + 
-  geom_text(aes(x = -0.6, y = 0.0055, label = paste('R =', signif(R$estimate, 2), 'P = ', signif(R$p.value, 2) ) ), size=6)
-
-g0
-
-ggsave(paste0(path_temp, "JSD_logP.png"),  plot=g3, width = 14, height = 12, scale=0.5, dpi=600)
+# g = ggplot(t_summary_new)
+# 
+# R = cor.test(t_summary_new$delta.x, t_summary_new$delta.y)
+# 
+# R
+# 
+# g0 = g + geom_point(aes(x = delta.x, y = delta.y, fill = Tissue), size=5, pch=21, colour='black') +
+#   geom_text_repel(aes(x = delta.x, y = delta.y, label = Tissue), force = 1, nudge_y = 0.001, size=5) + 
+#   labs(
+#     x=TeX('$\\Delta{log P value}'),
+#     y=TeX('$\\Delta{slope}$')
+#   )+
+#   theme_bw(base_size=16)+
+#   theme(
+#     legend.position = "None",
+#     legend.box = "vertical",
+#     text = element_text(size=14),
+#     axis.title = element_text(size=16),
+#     axis.text = element_text(size=16)
+#   ) + 
+#   geom_text(aes(x = -0.6, y = 0.0055, label = paste('R =', signif(R$estimate, 2), 'P = ', signif(R$p.value, 2) ) ), size=6)
+# 
+# g0
+# 
+# ggsave(paste0(path_temp, "JSD_logP.png"),  plot=g3, width = 14, height = 12, scale=0.5, dpi=600)
 
 
 
 t_summary_stats$Tissue_ab <- mapvalues(t_summary_stats$Tissue, tissue_names$SMTSD, tissue_names$tissue)
+
+t_summary_stats$Tissue_sh <- mapvalues(t_summary_stats$Tissue,
+                                       tissue_names_short$Tissue,
+                                       tissue_names_short$short)
 
 t_plot = inner_join(t_sum,t_summary_stats,by="Tissue")
 
@@ -338,10 +416,11 @@ t_plot$Tissue = factor(t_plot$Tissue, levels=t_summary_stats$Tissue)
 
 t_plot$Tissue_ab <- mapvalues(t_plot$Tissue, tissue_names$SMTSD, tissue_names$tissue)
 
+#t_plot$Tissue_sh <- mapvalues(t_plot$Tissue, tissue_names_short$Tissue, tissue_names_short$short)
+
 t_plot$Tissue_ab = factor(t_plot$Tissue_ab, levels=t_summary_stats$Tissue_ab)
 
-t_plot$Tissue_ab
-
+t_plot$Tissue_sh = factor(t_plot$Tissue_sh, levels=t_summary_stats$Tissue_sh)
 
 t_plot = t_plot %>%
   mutate(
@@ -358,46 +437,19 @@ t_plot = t_plot %>%
   )
 
 pval_star <- function(pval) {
-  if(pval > 0.001) {
+  if(pval > 0.05 / 27) {
     return('ns')
   } else {
     return(paste("P = ", signif(pval, 2) ) )
   }
 }
 
-a = t_plot %>% 
-  dplyr::select(gene, Tissue_ab) %>%
-  unique() %>%
-  dplyr::group_by(Tissue_ab) %>%
-  mutate(count = n()) %>%
-  dplyr::select(count, Tissue_ab) %>%
-  unique
-
-a
-
-t_plot
-
-a
-
-a %>% arrange(-count)
-
-b = t_plot %>% 
-  dplyr::group_by(Tissue_ab,delta) %>%
-  mutate(logP = -log(P,10)) %>%
-  do(w=wilcox.test(logP~age,data=.,paired=FALSE))
-
-
-
-c = b$w[[1]]
-
-c$statistic[1]
-
 t_label = t_plot %>% 
-  dplyr::group_by(Tissue_ab,delta) %>%
+  dplyr::group_by(Tissue_ab, Tissue_sh, delta) %>%
   mutate(logP = -log(P,10)) %>%
   filter(age %in% c('young', 'old')) %>%
   do(w=wilcox.test(logP~age,data=.,paired=FALSE)) %>%
-  dplyr::summarize(Tissue_ab,delta, W=w$p.value, stat=w$statistic[1] )%>%
+  dplyr::summarize(Tissue_ab, Tissue_sh, delta, W=w$p.value, stat=w$statistic[1] )%>%
   rowwise() %>%
   mutate(p_label = pval_star(W )) %>%
   mutate(log_W = -log(W, 10)) %>%
@@ -406,55 +458,97 @@ t_label = t_plot %>%
   arrange(-dir_W)
 
 t_plot$Tissue_ab = factor(t_plot$Tissue_ab, levels=t_label$Tissue_ab)
-
-t_plot$Tissue_ab
-
-t_plot$Tissue %>% unique()
+t_plot$Tissue_sh = factor(t_plot$Tissue_sh, levels=t_label$Tissue_sh)
 
 g=ggplot(t_plot %>%
-           filter(!Tissue %in% c('Whole_Blood', 'Stomach')) %>%
+           #filter(!Tissue %in% c('Whole_Blood', 'Stomach')) %>%
            filter(age %in% c('young', 'old'))
          )
 
 g2 = g+geom_point(aes(x=-log(exp_P,10),y=logP,color=age),size=.1)+
-  theme_bw(base_size = 14)+
-  facet_wrap(~Tissue_ab)+
+  theme_bw(base_size =6)+
+  facet_wrap(~Tissue_ab, nrow=3)+
   geom_text(aes(x=1.5,y=500,label=p_label),
-            data=t_label %>%
-              filter(!Tissue_ab %in% c('Blood', 'Stomach'))
-            ,size=4) + 
-  theme(legend.position = 'None',
+            data=t_label 
+            #%>% filter(!Tissue_ab %in% c('Blood', 'Stomach'))
+            ,size=12) + 
+  theme(#legend.position = 'None',
+    #axis.line = element_line(size=4),
+        #legend.key.size = unit(2, 'cm'),
+        legend.title = element_text(size=40),
+        legend.text = element_text(size=40),
+        axis.text = element_text(size=40),
+        axis.title = element_text(size=40),
         strip.background = element_blank(),
-        strip.text = element_text(size=10))+
+        strip.text = element_text(size=40))+
   labs(x = '-log(Expected)', y='-log(P values)') + 
-  scale_color_brewer(palette="Set1")
+  scale_color_brewer(palette="Set1") +
+  guides(color = guide_legend(override.aes = list(size = 7)))
 
 g2
 
-ggsave(paste0(path_temp, "quantile_eQTL.png"),  plot=g2, width = 14, height = 12, scale=0.7, dpi=600)
+ggsave(paste0(path_temp, "quantile_eQTL_all.png"),  plot=g2, width = 12, height = 6, units = 'in',
+       scale=0.7, dpi=600)
 
 g = ggplot(t_plot %>% 
              filter(Tissue %in% c('Whole_Blood', 'Stomach')) %>%
              filter(age %in% c('young', 'old'))
            
            )
+size_th = 40
 
-g2.2 = g+geom_point(aes(x=-log(exp_P,10),y=logP,color=age),size=1)+
-  theme_bw(base_size = 14)+
+g2.2 = g+geom_point(aes(x=-log(exp_P,10),y=logP,color=age), size=0.5)+
+  theme_bw(base_size = 10)+
   facet_wrap(~Tissue_ab)+
-  geom_text(aes(x=1.5,y=500,label=p_label),data=t_label %>% filter(Tissue_ab %in% c('Blood', 'Stomach')),size=8) + 
+  geom_text(aes(x=1.5,y=500,label=p_label),
+            data=t_label %>% filter(Tissue_ab %in% c('Blood', 'Stomach')),
+            size=size_th/.pt) + 
   theme(legend.position = 'bottom',
-        legend.text = element_text(size = 16),
-        legend.title = element_text(size = 16),
+        legend.text = element_text(size = size_th),
+        legend.title = element_text(size = size_th),
+        axis.text = element_text(size=size_th),
+        axis.title = element_text(size=size_th),
         strip.background = element_blank(),
-        strip.text = element_text(size=16))+
+        strip.text = element_text(size=size_th))+
   labs(x = '-log(Expected)', y='-log(P values)') + 
   guides(color = guide_legend(override.aes = list(size = 5))) +
   scale_color_brewer(palette="Set1")
 
 g2.2
 
-ggsave(paste0(path_temp, "quantile_eQTL_WB.png"),  plot=g2.2, width = 14, height = 12, scale=0.5, dpi=600)
+ggsave(paste0(path_temp, "quantile_eQTL_WB.png"),  plot=g2.2, width = 7, height = 6, unit='in', scale=0.5, dpi=300)
+
+g = ggplot(t_plot %>% 
+             filter(Tissue %in% c('Heart_Atrial_Appendage', 'Liver')) %>%
+             filter(age %in% c('young', 'old'))
+           
+)
+
+size_th = 40
+
+g2.3 = g+geom_point(aes(x=-log(exp_P,10),y=logP,color=age), size=0.5)+
+  theme_bw(base_size = 10)+
+  facet_wrap(~Tissue_ab)+
+  geom_text(aes(x=1.7,y=400,label=p_label),
+            data=t_label %>%
+              filter(Tissue_ab %in% c('HeartAA', 'Liver')),
+            size=size_th/.pt) + 
+  theme(legend.position = 'bottom',
+        legend.text = element_text(size = size_th),
+        legend.title = element_text(size = size_th),
+        axis.text = element_text(size=size_th),
+        axis.title = element_text(size=size_th),
+        strip.background = element_blank(),
+        strip.text = element_text(size=size_th))+
+  labs(x = '-log(Expected)', y='-log(P values)') + 
+  guides(color = guide_legend(override.aes = list(size = 5))) +
+  scale_color_brewer(palette="Set1")
+
+g2.3
+
+ggsave(paste0(path_temp, "quantile_eQTL_HL.png"),  plot=g2.3, width = 7, height = 6, unit='in', scale=0.5, dpi=300)
+
+
 
 load("joint_frame.Rda")
 

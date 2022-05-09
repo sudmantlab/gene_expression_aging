@@ -10,6 +10,8 @@ from JSD_utils import *
 import statsmodels.formula.api as smf
 from pysam import VariantFile, TabixFile
 
+np.random.seed(0)
+
 parser = argparse.ArgumentParser(description='Snakemake script for calculating adjacent gene Spearman correlation.')
 parser.add_argument('-t', '--test', action='store_true', 
                     default=False,
@@ -86,6 +88,16 @@ def calc_eQTL_lm(input, output):
         temp_frame_young = temp_frame.loc[temp_frame['AGE'] < 55]
 
         temp_frame_old = temp_frame.loc[temp_frame['AGE'] >= 55]
+
+        len_old = temp_frame_old.shape[0]
+
+        len_young = temp_frame_young.shape[0]
+
+        downsample = min(len_old, len_young)
+
+        temp_frame_old = temp_frame_old.sample(downsample)
+
+        temp_frame_young = temp_frame_young.sample(downsample)
 
         #temp_frame_young, temp_frame_old = split_age_new(temp_frame, table, 55)
 
@@ -194,10 +206,10 @@ def calc_eQTL_lm(input, output):
 
 def calc_eQTL_lm_save(input, output):
     path = "/global/home/users/shenghuanjie/projects/ge_variance/datasets/gtex_new/input/input_by_tissue/"
-    table = pd.read_csv(path + "../phs000424.v8.pht002743.v8.p2.c1.GTEx_Sample_Info.txt.gz", sep='\t', compression='gzip')
+    #table = pd.read_csv(path + "../phs000424.v8.pht002743.v8.p2.c1.GTEx_Sample_Info.txt.gz", sep='\t', compression='gzip')
 
     frame = None
-    save_path = "/global/home/users/ryo10244201/sudmant_lab/variance_tissue/JSD_geneset/analysis/JSD_eQTL/"
+    save_path = "/global/scratch/users/ryo10244201/analysis/JSD_eQTL/"
 
     path_data = "/clusterfs/genomicdata/GTEx/eQTL_files/"
 
@@ -260,13 +272,13 @@ def edi_var(var, id):
     zero = id[0]
     one = id[1]
     if var == "0|0":
-        return zero + "_" + zero
+        return 0
     elif var == "0|1":
-        return zero + "_" + one
+        return 1
     elif var == "1|0":
-        return zero + "_" + one
+        return 1
     else:
-        return one + "_" + one
+        return 2
 
 if args.test == True:
     print("testing")
@@ -276,6 +288,6 @@ if args.test == True:
 
 if args.frame == True:
     print("saving frame")
-    calc_eQTL_lm_save("Whole_Blood", "")
+    calc_eQTL_lm_save("Heart_Atrial_Appendage", "")
 
 calc_eQTL_lm(snakemake.input[0][snakemake.input[0].rfind('/') + 1:snakemake.input[0].find('.')], snakemake.output[0])

@@ -12,6 +12,7 @@ library(latex2exp)
 library(ggtern)
 library(viridis)
 library(gplots)
+setwd("Z:/sudmant_lab/gene_expression_variance/Rscript")
 source('../Rscript/cleanSubType.R')
 
 path = "Y:/analysis/Predixcan_eQTL/"
@@ -65,9 +66,13 @@ cor.test(a$estimate.x, a$estimate_n)
 
 pal.tissue <- readRDS('../analysis/pal_tissue.Rdata')
 
+tissue_names <-  vroom('../analysis/misc/selected_tissue_abbreviations_etl2.tsv')
+
+a$Tissue_ab <- mapvalues(a$Tissue, tissue_names$SMTSD, tissue_names$tissue)
+
 ggplot(a) + 
-  geom_point(aes(x = delta, y = estimate_n, fill = Tissue.neat), size=5, pch=21, colour='black') +
-  geom_text_repel(aes(x = delta, y = estimate_n, label = Tissue_ab), force = 1, nudge_y = 0.001, size=5) + 
+  geom_point(aes(x = delta, y = estimate_n, fill = Tissue.neat), size=3, pch=21, colour='black') +
+  geom_text_repel(aes(x = delta, y = estimate_n, label = Tissue_ab), force = 1, nudge_y = 0.001, size=10) + 
   labs(
     x=TeX('$\\Delta{log P value}'),
     y=TeX('$\\Delta{h^2}$')
@@ -77,56 +82,27 @@ ggplot(a) +
     legend.position = "None",
     legend.box = "vertical",
     text = element_text(size=14),
-    axis.title = element_text(size=16),
-    axis.text = element_text(size=16)
+    axis.title = element_text(size=40),
+    axis.text = element_text(size=40)
   ) + 
   scale_fill_manual(
     values = pal.tissue
   ) +
-  geom_text(aes(x = -0.6, y = 0.006, label = 'R = 0.569, P = 0.00193'), size=6)
+  geom_text(aes(x = -0.4, y = 0.007, label = 'R = 0.569, P = 0.00193'), size=12)
 
-ggsave(paste0(path_temp, "Predixcan_vs_eQTL_b27.pdf"))
-tissue_names <-  vroom('../analysis/misc/selected_tissue_abbreviations_etl.tsv')
-a$Tissue_ab <- mapvalues(a$Tissue, tissue_names$SMTSD, tissue_names$tissue)
+path_sup = "G:/Shared drives/sudmantlab/projects/agingGeneRegulation/figures/figure3/figS_"
 
-ggplot(a %>% mutate(
-  Tissue.type = Tissue %>% 
-    str_split("_") %>% 
-    sapply("[[", 1) %>% 
-    clean.subtypes,
-  Tissue.subtype = Tissue %>% 
-    str_split(., pattern = "_", n=2) %>% 
-    sapply(function(x){ifelse(length(x)>1, x[[2]], '')}) %>% 
-    clean.subtypes,
-  Tissue.neat = str_c(Tissue.type, "\n", Tissue.subtype) %>% 
-    str_trim()
-)) + 
-  geom_point(aes(x = estimate.x, y = estimate.y, fill = Tissue.neat), size=5, pch=21, colour='black') +
-  geom_text_repel(aes(x = estimate.x, y = estimate.y, label = Tissue_ab), force = 1, nudge_y = 0.001, size=5) + 
-  labs(
-    x=TeX('$\\Delta{JSD} (old - young)'),
-    y=TeX('$\\Delta{h^2}$ (old - young )')
-  )+
-  theme_bw(base_size=16)+
-  theme(
-    legend.position = "None",
-    legend.box = "vertical",
-    text = element_text(size=14),
-    axis.title = element_text(size=16),
-    axis.text = element_text(size=16)
-  ) + 
-  scale_fill_manual(
-    values = pal.tissue
-  ) +
-  geom_text(aes(x = 0, y = 0.006, label = 'R = -0.597, P = 9.9e-4'), size=6)
+ggsave(paste0(path_sup, "Predixcan_vs_eQTL_b27.png"), width=9, height=7, scale=0.5)
 
-#ggsave(paste0(path_temp, "Predixcan_vs_JSD_b27.pdf"))
+
+
+
 
 cor.test(a$estimate.x, a$delta)
 
 ggplot(a) + 
-  geom_point(aes(x = estimate.x, y = -delta, fill = Tissue.neat), size=5, pch=21, colour='black') +
-  geom_text_repel(aes(x = estimate.x, y = -delta, label = Tissue_ab), force = 1, nudge_y = 0.001, size=5) + 
+  geom_point(aes(x = estimate.x, y = -delta, fill = Tissue.neat), size=3, pch=21, colour='black') +
+  geom_text_repel(aes(x = estimate.x, y = -delta, label = Tissue_ab), force = 1, nudge_y = 0.001, size=10) + 
   labs(
     x=TeX('$\\Delta{JSD}'),
     y=TeX('$\\Delta{log P value}$')
@@ -136,16 +112,16 @@ ggplot(a) +
     legend.position = "None",
     legend.box = "vertical",
     text = element_text(size=14),
-    axis.title = element_text(size=16),
-    axis.text = element_text(size=16)
+    axis.title = element_text(size=40),
+    axis.text = element_text(size=40)
   ) + 
   scale_fill_manual(
     values = pal.tissue
   ) +
-  geom_text(aes(x = 0.0004, y = 0.65, label = 'R = -0.48, P = 0.01'), size=6) +
+  geom_text(aes(x = 0.0005, y = 0.55, label = 'R = -0.48, P = 0.01'), size=12) +
   coord_flip()
 
-#ggsave(paste0(path_temp, "eQTL_vs_JSD_b27.pdf"), scale = 0.8, width = 10, height = 8)
+ggsave(paste0(path_sup, "eQTL_vs_JSD_b27.png"), width=9, height=7, scale=0.5)
 
 ggplot(a %>% 
          mutate(p_star = ifelse(p.value < 0.001, '**', 'ns'))
@@ -236,28 +212,40 @@ ggplot(a)+
 #   labs(x = "tissues", y = "mean variance explained", color = "variable")
 
 t_sum   %>% arrange(Tissue)
-g=ggplot(t_sum %>% filter(var_component!="E") %>% mutate(Tissue = Tissue,
-  Tissue.type = Tissue %>% 
-    str_split("_") %>% 
-    sapply("[[", 1) %>% 
-    clean.subtypes,
-  Tissue.subtype = Tissue %>% 
-    str_split(., pattern = "_", n=2) %>% 
-    sapply(function(x){ifelse(length(x)>1, x[[2]], '')}) %>% 
-    clean.subtypes,
-  Tissue.neat = str_c(Tissue.type, " ", Tissue.subtype) %>% 
-    str_trim()
-) )
-g+geom_point(aes(y=mu,x=reorder(Tissue.neat,A_mu),color=var_component), size=4)+
-  geom_errorbar(aes(ymin=mu-se,ymax=mu+se,x=reorder(Tissue.neat,mu),color=var_component), width=0.7, color = 'black')+
+
+tissue_names <-  vroom('../analysis/misc/selected_tissue_abbreviations_etl2.tsv')
+t_sum$Tissue_ab <- mapvalues(t_sum$Tissue, tissue_names$SMTSD, tissue_names$tissue)
+
+g=ggplot(t_sum %>% filter(var_component!="E") 
+  #        %>% mutate(Tissue = Tissue,
+  # Tissue.type = Tissue %>% 
+  #   str_split("_") %>% 
+  #   sapply("[[", 1) %>% 
+  #   clean.subtypes,
+  # Tissue.subtype = Tissue %>% 
+  #   str_split(., pattern = "_", n=2) %>% 
+  #   sapply(function(x){ifelse(length(x)>1, x[[2]], '')}) %>% 
+  #   clean.subtypes,
+  # Tissue.neat = str_c(Tissue.type, " ", Tissue.subtype) %>% 
+  #   str_trim())
+  )
+g2 = g+geom_point(aes(y=mu,x=reorder(Tissue_ab,A_mu),color=var_component), size=4)+
+  geom_errorbar(aes(ymin=mu-se,ymax=mu+se,x=reorder(Tissue_ab,mu),color=var_component), width=0.7, color = 'black')+
   #facet_wrap(~var_component,ncol=1)+
   theme_bw()+
   coord_flip()+
   scale_color_brewer(palette="Set2", labels = c('Age', 'Genetics'))+ 
   labs(x = "tissues", y = TeX('$\\mu_{R^2}$'), color = TeX('$R^2$')) + 
-  theme(axis.title=element_text(size=14,face="bold"))
+  theme(axis.title=element_text(size=20,face="bold"),
+        axis.text=element_text(size=20),
+        legend.title=element_text(size=12),
+        legend.text = element_text(size=12),
+        legend.position = 'none'
+        )
 
-ggsave(paste0(path_temp, "summary_A_G_b27.pdf"), scale = 0.7)
+g2
+
+ggsave(paste0(path_temp, "summary_A_G_b27.png"), plot=g2, width=10, height=11, dpi=300,scale = 0.7)
 
 t_tern_sum  = t_dat  %>% 
   group_by(Gene) %>%
@@ -286,7 +274,26 @@ g1 = ggtern(data=t_dat %>% filter(E < 1) %>%
 
 g1
 
-ggsave(paste0(path_temp, "triangle_A_G_E_b27.png"), scale = 0.85, plot = g1, dpi=600)
+ggsave(paste0(path_temp, "triangle_A_G_E_b27.png"), scale = 0.85, plot = g1, dpi=300)
+
+library(ggExtra)
+
+g1.1 = ggplot(t_dat %>%
+                filter(E < 1) %>%
+                mutate(`E+O` = E) %>%
+                mutate(`A+G` = A+G)
+                ) + 
+  geom_point(aes(x=A, y=G, col = A),alpha=0.05, size=2)+
+  theme_bw(base_size=12)+
+  labs(x=TeX('$R^2_{age}$'), y=TeX('$R^2_{genetics}$'), col=TeX('$R^2_{age}$'))+
+  theme(legend.position='bottom') +
+  scale_color_viridis()
+
+g1.1 = ggMarginal(g1.1, type="density", fill='slateblue')
+
+g1.1
+
+ggsave(paste0(path_temp, "dot_A_G_b27.png"), scale = 0.85, plot = g1.1, dpi=300)
 
 summary(lm(G~A,data=t_dat %>% filter(E<1)))
 
@@ -452,7 +459,7 @@ g3 = ggplot(tsp_AG %>%
 
 g3
 
-ggsave(paste0(path_temp, "_row_tsp.png"), plot = g3, width = 14, height = 12, dpi = 300, scale = 0.5)
+ggsave(paste0(path_temp, "_row_tsp.png"), plot = g3, width = 12, height = 10, dpi = 300, scale = 0.5)
 
 # 
 
@@ -527,12 +534,29 @@ gs <-  gseGO(geneList=genelist,
 
 gs_res = data.frame(gs)
 
-#write.csv2(gs_res, file = "G:/Shared drives/sudmantlab/projects/agingGeneRegulation/tables/gsea_result_beta_b27.csv")
+#write.csv2(gs_res, file = "G:/Shared drives/sudmantlab/projects/agingGeneRegulation/tables/gsea_result_beta_mu_b27.csv")
 
-g = ggplot(gs_res)
+gs_res = vroom("G:/Shared drives/sudmantlab/projects/agingGeneRegulation/tables/gsea_result_beta_b27.csv")
 
-g +  geom_point(aes(x=NES,
-                    y=reorder(Description,NES),
+gs_res$pvalue = as.numeric(gsub(",", ".", gsub("\\.", "", gs_res$pvalue)))
+
+gs_res$qvalues = as.numeric(gsub(",", ".", gsub("\\.", "", gs_res$qvalues)))
+
+gs_res$p.adjust = as.numeric(gsub(",", ".", gsub("\\.", "", gs_res$p.adjust)))
+
+gs_res$enrichmentScore = as.numeric(gsub(",", ".", gsub("\\.", "", gs_res$enrichmentScore)))
+
+gs_res
+
+g = ggplot(gs_res %>%
+             filter(qvalues < 0.02) %>%
+             filter(setSize < 50)
+           
+           )
+
+
+g +  geom_point(aes(x=enrichmentScore,
+                    y=reorder(Description, enrichmentScore),
                     fill=qvalues,
                     size=setSize),
                 shape=24,
@@ -541,11 +565,22 @@ g +  geom_point(aes(x=NES,
   scale_fill_gradientn(colors=pal)+
   scale_y_discrete("")+
   scale_size(range=c(2,8))+
-  theme(legend.key.size=unit(.3,"cm"),
-        legend.box.background = element_rect(colour = "grey")) +
-  labs(x = 'Normalized Enrichment score', fill = "p adjusted")
+  theme(
+    # legend.key.size=unit(.3,"cm"),
+    #     legend.box.background = element_rect(colour = "grey"),
+        legend.title = element_text(size=30),
+        legend.text = element_text(size=30),
+        axis.text = element_text(size=40),
+        axis.title = element_text(size=30)
+        ) +
+  labs(x = 'normalized enrichment score',
+       fill = "adjusted p-values", 
+       size = 'n genes in pathway'
+       )
 
-ggsave(paste0(path_temp, "GO_AGE_BP_COMMON_b27_new_0.025.pdf"), width = 16, height = 12, dpi = 300, scale = 0.8)
+
+
+ggsave(paste0(path_temp, "GO_AGE_BP_COMMON_b27_set150.png"), width = 10, height = 6, dpi = 300, scale = 0.75)
 
 library("biomaRt")
 mart <- useMart(biomart = "ensembl", dataset = "hsapiens_gene_ensembl")
@@ -712,65 +747,65 @@ g_temp = g +  geom_point(aes(x=NES,
   labs(x = 'Normalized Enrichment score')
 g_temp
   
-gs_res = data.frame()
-
-for (Tissue_t in Tissues) {
-  print(Tissue_t)
-  b = t_dat %>% 
-    filter(Tissue == Tissue_t) %>%
-    filter(!A == 0) %>%
-    filter(!G == 0) %>%
-    dplyr::mutate(coef_sign = ifelse(Coef > 0, 1, -1)) %>%
-    dplyr::mutate(A_sign = A*coef_sign)
-  
-  genelist = b$A
-  
-  names(genelist) = b$gene
-  
-  genelist = sort(genelist, decreasing = TRUE)
-  
-  gs_A <-  gseGO(geneList=genelist, 
-                 ont ="ALL", 
-                 keyType = "ENSEMBL", 
-                 minGSSize = 3, 
-                 maxGSSize = 800, 
-                 pvalueCutoff = 1, 
-                 verbose = TRUE, 
-                 OrgDb = organism, 
-                 pAdjustMethod = "fdr")
-  
-  gs_res_A = data.frame(gs_A)
-  
-  genelist = b$G
-  
-  names(genelist) = b$gene
-  
-  genelist = sort(genelist, decreasing = TRUE)
-  
-  gs_G <-  gseGO(geneList=genelist, 
-                 ont ="ALL", 
-                 keyType = "ENSEMBL", 
-                 minGSSize = 3, 
-                 maxGSSize = 800, 
-                 pvalueCutoff = 1, 
-                 verbose = TRUE, 
-                 OrgDb = organism, 
-                 pAdjustMethod = "fdr")
-  
-  gs_res_G = data.frame(gs_G)
-  
-  gs_res_A$attribute = 'Age'
-  
-  gs_res_G$attribute = 'Genetics'
-  
-  gs_res_temp = rbind(gs_res_G, gs_res_A)
-  
-  gs_res_temp$Tissue_t = Tissue_t
-  
-  gs_res = rbind(gs_res, gs_res_temp)
-}
-
-write.csv2(gs_res, paste0(path_temp, 'gs_res_new.csv')) 
+# gs_res = data.frame()
+# 
+# for (Tissue_t in Tissues) {
+#   print(Tissue_t)
+#   b = t_dat %>% 
+#     filter(Tissue == Tissue_t) %>%
+#     filter(!A == 0) %>%
+#     filter(!G == 0) %>%
+#     dplyr::mutate(coef_sign = ifelse(Coef > 0, 1, -1)) %>%
+#     dplyr::mutate(A_sign = A*coef_sign)
+#   
+#   genelist = b$A
+#   
+#   names(genelist) = b$gene
+#   
+#   genelist = sort(genelist, decreasing = TRUE)
+#   
+#   gs_A <-  gseGO(geneList=genelist, 
+#                  ont ="ALL", 
+#                  keyType = "ENSEMBL", 
+#                  minGSSize = 3, 
+#                  maxGSSize = 800, 
+#                  pvalueCutoff = 1, 
+#                  verbose = TRUE, 
+#                  OrgDb = organism, 
+#                  pAdjustMethod = "fdr")
+#   
+#   gs_res_A = data.frame(gs_A)
+#   
+#   genelist = b$G
+#   
+#   names(genelist) = b$gene
+#   
+#   genelist = sort(genelist, decreasing = TRUE)
+#   
+#   gs_G <-  gseGO(geneList=genelist, 
+#                  ont ="ALL", 
+#                  keyType = "ENSEMBL", 
+#                  minGSSize = 3, 
+#                  maxGSSize = 800, 
+#                  pvalueCutoff = 1, 
+#                  verbose = TRUE, 
+#                  OrgDb = organism, 
+#                  pAdjustMethod = "fdr")
+#   
+#   gs_res_G = data.frame(gs_G)
+#   
+#   gs_res_A$attribute = 'Age'
+#   
+#   gs_res_G$attribute = 'Genetics'
+#   
+#   gs_res_temp = rbind(gs_res_G, gs_res_A)
+#   
+#   gs_res_temp$Tissue_t = Tissue_t
+#   
+#   gs_res = rbind(gs_res, gs_res_temp)
+# }
+# 
+# write.csv2(gs_res, paste0(path_temp, 'gs_res_new.csv')) 
 
 gs_res = vroom(paste0(path_temp, 'gs_res_new.csv'))
 
@@ -791,10 +826,60 @@ gs_res_simp = gs_res %>%
   dplyr::select(pvalue,exp_P,Description,attribute, Tissue_t) %>%
   dplyr::mutate(logP=-log(pvalue))
 
+tissue_names <-  vroom('../analysis/misc/selected_tissue_abbreviations_etl2.tsv')
+gs_res_simp$Tissue_ab = mapvalues(gs_res_simp$Tissue_t, tissue_names$SMTSD, tissue_names$tissue)
+
+
 g = ggplot(gs_res_simp %>%
              filter(Tissue_t %in%
                       c("Whole_Blood", "Colon_Transverse",
-                        "Liver", "Pancreas")) %>%
+                        "Liver", "Pancreas")) 
+           # %>%
+             # dplyr::mutate(Tissue = Tissue_t,
+             #        Tissue.type = Tissue %>% 
+             #          str_split("_") %>% 
+             #          sapply("[[", 1) %>% 
+             #          clean.subtypes,
+             #        Tissue.subtype = Tissue %>% 
+             #          str_split(., pattern = "_", n=2) %>% 
+             #          sapply(function(x){ifelse(length(x)>1, x[[2]], '')}) %>% 
+             #          clean.subtypes,
+             #        Tissue.neat = str_c(Tissue.type, " ", Tissue.subtype) %>% 
+             #          str_trim()
+             # )
+           )
+
+t_test = gs_res_simp %>% 
+  dplyr::group_by(Tissue_t) %>%
+  do(w=wilcox.test(logP~attribute,data=.,paired=FALSE)) %>%
+  dplyr::summarize(Tissue_t, W=w$p.value, stat=w$statistic[1] )
+
+
+
+
+g2 = g+geom_point(aes(x=-log(exp_P,10),y=logP,color=attribute),size=1)+
+  theme_bw(base_size = 14)+
+  theme(strip.background = element_blank(),
+        strip.text = element_text(size=24),
+        legend.text = element_text(size=20),
+        axis.title = element_text(size=20),
+        axis.text = element_text(size=20),
+        legend.position='bottom'
+        )+
+  geom_abline(aes(x = x), data = data.frame(x =c(0, 4)), slope = 1, intercept = 0) +
+  labs(x = '-log(Expected)', y='-log(P values)', col = '') + 
+  scale_color_brewer(palette="Set2") +
+  facet_wrap(~Tissue_ab) +
+  guides(colour = guide_legend(override.aes = list(size=6)))
+
+g2
+
+ggsave(paste0(path_temp, "facet_pathway_qqplot_4.png"), plot = g2, width = 16, height = 12, dpi = 300, scale = 0.8)
+
+tissue_names <-  vroom('../analysis/misc/selected_tissue_abbreviations_etl2.tsv')
+gs_res_simp$Tissue_ab = mapvalues(gs_res_simp$Tissue_t, tissue_names$SMTSD, tissue_names$tissue)
+
+g = ggplot(gs_res_simp %>%
              mutate(Tissue = Tissue_t,
                     Tissue.type = Tissue %>% 
                       str_split("_") %>% 
@@ -808,54 +893,60 @@ g = ggplot(gs_res_simp %>%
                       str_trim()
              ))
 
+
+
 t_test = gs_res_simp %>% 
   dplyr::group_by(Tissue_t) %>%
   do(w=wilcox.test(logP~attribute,data=.,paired=FALSE)) %>%
   dplyr::summarize(Tissue_t, W=w$p.value, stat=w$statistic[1] )
 
 
-g2 = g+geom_point(aes(x=-log(exp_P,10),y=logP,color=attribute),size=1)+
+g2.1 = g+geom_point(aes(x=-log(exp_P,10),y=logP,color=attribute),size=1)+
   theme_bw(base_size = 14)+
   theme(strip.background = element_blank(),
-        strip.text = element_text(size=8))+
+        strip.text = element_text(size=16),
+        axis.title = element_text(size=20),
+        legend.text = element_text(size=20)
+        )+
   geom_abline(aes(x = x), data = data.frame(x =c(0, 4)), slope = 1, intercept = 0) +
   labs(x = '-log(Expected)', y='-log(P values)', col = '') + 
   scale_color_brewer(palette="Set2") +
-  facet_wrap(~Tissue.neat)
+  facet_wrap(~Tissue_ab)
 
-g2
+g2.1
 
-ggsave(paste0(path_temp, "facet_pathway_qqplot_4.png"), plot = g2, width = 16, height = 12, dpi = 300, scale = 0.8)
+ggsave(paste0(path_temp, "facet_pathway_qqplot_all.png"), plot = g2.1,
+       width = 8, height = 6, dpi = 300, scale = 0.7)
 
-Tissues_c7 = c('Esophagus_Mucosa', 'Colon_Transverse', 'Whole_Blood', 'Heart_Left_Ventricle',
-                             'Esophagus_Gastroesophageal_Junction', 'Heart_Atrial_Appendage', 'Skin_Sun_Exposed_Lower_leg')
-pal=pnw_palette("Bay",100)
-gs_res %>% filter(Tissue_t == Tissue_t & attribute == "Age")%>% top_n(-20, wt = p.adjust)
-
-for (Tissue_t in Tissues_c7) {
-  
-
-  g = ggplot(gs_res %>% 
-               filter(Tissue_t == Tissue_t & attribute == "Age" & ONTOLOGY == 'BP') %>%
-               top_n(-20, wt = p.adjust))
-
-  g_temp = g +  geom_point(aes(x=NES,
-                        y=reorder(Description,NES),
-                        fill=p.adjust,
-                        size=setSize),
-                    shape=24,
-                    stroke=.2)+
-      theme_bw(base_size=16)+
-      scale_fill_gradientn(colors=pal)+
-      scale_y_discrete("")+
-      scale_size(range=c(2,8))+
-      theme(legend.key.size=unit(.3,"cm"),
-            legend.box.background = element_rect(colour = "grey")) +
-      labs(x = 'Normalized Enrichment score')
-  g_temp
-  
-  ggsave(paste0(path_temp, Tissue_t,"_GO_AGE_b27.pdf"), plot = g_temp, width = 12, height = 16, dpi = 300)
-}
-
-a = gs_res_A %>% filter(qvalues < 0.05)
-a
+# Tissues_c7 = c('Esophagus_Mucosa', 'Colon_Transverse', 'Whole_Blood', 'Heart_Left_Ventricle',
+#                              'Esophagus_Gastroesophageal_Junction', 'Heart_Atrial_Appendage', 'Skin_Sun_Exposed_Lower_leg')
+# pal=pnw_palette("Bay",100)
+# gs_res %>% filter(Tissue_t == Tissue_t & attribute == "Age")%>% top_n(-20, wt = p.adjust)
+# 
+# for (Tissue_t in Tissues_c7) {
+#   
+# 
+#   g = ggplot(gs_res %>% 
+#                filter(Tissue_t == Tissue_t & attribute == "Age" & ONTOLOGY == 'BP') %>%
+#                top_n(-20, wt = p.adjust))
+# 
+#   g_temp = g +  geom_point(aes(x=NES,
+#                         y=reorder(Description,NES),
+#                         fill=p.adjust,
+#                         size=setSize),
+#                     shape=24,
+#                     stroke=.2)+
+#       theme_bw(base_size=16)+
+#       scale_fill_gradientn(colors=pal)+
+#       scale_y_discrete("")+
+#       scale_size(range=c(2,8))+
+#       theme(legend.key.size=unit(.3,"cm"),
+#             legend.box.background = element_rect(colour = "grey")) +
+#       labs(x = 'Normalized Enrichment score')
+#   g_temp
+#   
+#   ggsave(paste0(path_temp, Tissue_t,"_GO_AGE_b27.pdf"), plot = g_temp, width = 12, height = 16, dpi = 300)
+# }
+# 
+# a = gs_res_A %>% filter(qvalues < 0.05)
+# a
