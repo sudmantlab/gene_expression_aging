@@ -19,6 +19,7 @@ Installation
 ---------------
 Download GTEx v8 from https://www.gtexportal.org/home/datasets
 Download complete results of model from https://doi.org/10.5281/zenodo.6533954
+
 Authors
 -------
 
